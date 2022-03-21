@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6258055527E874B0000F118D /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6258055427E874B0000F118D /* Todo.swift */; };
 		62A03D0D27E47EF700681421 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D0C27E47EF700681421 /* AppDelegate.swift */; };
 		62A03D0F27E47EF700681421 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D0E27E47EF700681421 /* SceneDelegate.swift */; };
 		62A03D1127E47EF700681421 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D1027E47EF700681421 /* TodoListViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6258055427E874B0000F118D /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		62A03D0927E47EF700681421 /* MyTodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A03D0C27E47EF700681421 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62A03D0E27E47EF700681421 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +39,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6258055327E874A3000F118D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6258055427E874B0000F118D /* Todo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		62A03D0027E47EF700681421 = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +66,7 @@
 		62A03D0B27E47EF700681421 /* MyTodoList */ = {
 			isa = PBXGroup;
 			children = (
+				6258055327E874A3000F118D /* Models */,
 				62A03D1A27E47EFA00681421 /* Info.plist */,
 				62A03D2427E48CF900681421 /* Applications */,
 				62A03D2327E48CF100681421 /* Resources */,
@@ -161,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6258055527E874B0000F118D /* Todo.swift in Sources */,
 				62A03D2127E48C5D00681421 /* AddTodoViewController.swift in Sources */,
 				62A03D1127E47EF700681421 /* TodoListViewController.swift in Sources */,
 				62A03D0D27E47EF700681421 /* AppDelegate.swift in Sources */,
@@ -305,6 +317,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4YDCQLJY46;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyTodoList/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -320,7 +333,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -331,6 +344,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4YDCQLJY46;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyTodoList/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -346,7 +360,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -23,7 +23,6 @@ class TodoListViewController: UIViewController {
     private lazy var floatingButton : UIButton = {
         let btnSize : CGFloat = 50
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: btnSize, height: btnSize))
-//        btn.layer.masksToBounds = true
         btn.backgroundColor = .systemPink
         let image = UIImage(
             systemName: "plus",
@@ -70,16 +69,17 @@ extension TodoListViewController {
         stackView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         view.addSubview(stackView)
-        setStackViewConstraints()
+        setupStackViewConstraints()
     }
     
-    func setStackViewConstraints() {
-        var constraints = [NSLayoutConstraint]()
-        constraints.append(stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor))
-        constraints.append(stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor))
-        constraints.append(stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor))
-        constraints.append(stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor))
-        NSLayoutConstraint.activate(constraints)
+    func setupStackViewConstraints() {
+        let safeArea = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        ])
     }
     
     func setupTableView() {
@@ -95,8 +95,9 @@ extension TodoListViewController {
     
     @objc func didTapAddBtn() {
         DispatchQueue.main.async {
-            let vc = UINavigationController(rootViewController: AddTodoViewController())
-            self.present(vc, animated: true, completion: nil)
+            let vc = AddTodoViewController()
+            vc.modalPresentationStyle = .overCurrentContext
+            self.present(vc, animated: false, completion: nil)
         }
     }
 }
