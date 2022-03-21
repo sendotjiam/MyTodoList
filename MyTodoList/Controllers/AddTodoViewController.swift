@@ -41,7 +41,7 @@ class AddTodoViewController: UIViewController {
     
     // MARK: - UIKit
     private lazy var segmentedControl : UISegmentedControl = {
-        let control = UISegmentedControl(items: ["All", "Low", "Medium", "High"])
+        let control = UISegmentedControl(items: ["Low", "Medium", "High"])
         control.selectedSegmentIndex = 0
         return control
     }()
@@ -183,6 +183,11 @@ extension AddTodoViewController {
 // MARK: - OBJC Action Function
 extension AddTodoViewController {
     @objc private func addNewTodo() {
+        guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex),
+              let title = textField.text else {
+                  return
+              }
+        let todo = Todo(title: title, priority: priority)
         DispatchQueue.main.async { [weak self] in
             self?.animateDismissView()
         }
