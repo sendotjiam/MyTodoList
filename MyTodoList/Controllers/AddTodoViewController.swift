@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class AddTodoViewController: UIViewController {
     
@@ -18,7 +19,6 @@ class AddTodoViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
     private lazy var dimmedAlpha : CGFloat = 0.6
     private lazy var dimmedView : UIView = {
         let view = UIView()
@@ -67,6 +67,12 @@ class AddTodoViewController: UIViewController {
         return button
     }()
     private var stackView : UIStackView!
+    
+    // MARK: - RxSwift
+    private let todoSubject = PublishSubject<Todo>()
+    var todoSubjectObservable : Observable<Todo> {
+        return todoSubject.asObservable()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,6 +194,7 @@ extension AddTodoViewController {
                   return
               }
         let todo = Todo(title: title, priority: priority)
+        todoSubject.onNext(todo)
         DispatchQueue.main.async { [weak self] in
             self?.animateDismissView()
         }

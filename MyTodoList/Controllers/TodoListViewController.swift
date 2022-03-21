@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class TodoListViewController: UIViewController {
     
+    // MARK: - UIKit
     private lazy var prioritySegmentedControl : UISegmentedControl = {
         let control = UISegmentedControl(items: ["All", "Low", "Medium", "High"])
         control.selectedSegmentIndex = 0
@@ -36,6 +38,9 @@ class TodoListViewController: UIViewController {
         btn.layer.cornerRadius = btnSize/2
         return btn
     }()
+    
+    // MARK: - RxSwift
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
