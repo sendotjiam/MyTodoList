@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class AddTodoViewController: UIViewController {
     
@@ -36,6 +37,7 @@ class AddTodoViewController: UIViewController {
     
     var dismissibleHeight: CGFloat = 0
     let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
+    
     // keep updated with new height
     var currentContainerHeight: CGFloat = 0
     
@@ -73,7 +75,6 @@ class AddTodoViewController: UIViewController {
     var todoSubjectObservable : Observable<Todo> {
         return todoSubject.asObservable()
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupComponentHeight()
@@ -186,7 +187,7 @@ extension AddTodoViewController {
     }
 }
 
-// MARK: - OBJC Action Function
+// MARK: - Objc Function - AddTodo - Gesture Action
 extension AddTodoViewController {
     @objc private func addNewTodo() {
         guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex),

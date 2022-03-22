@@ -39,6 +39,10 @@ class TodoListViewController: UIViewController {
         return btn
     }()
     
+    // MARK: - TableView Data
+    var data = [Todo]()
+    
+    
     // MARK: - RxSwift
     let disposeBag = DisposeBag()
     
@@ -102,6 +106,9 @@ extension TodoListViewController {
         DispatchQueue.main.async {
             let vc = AddTodoViewController()
             vc.modalPresentationStyle = .overCurrentContext
+            vc.todoSubjectObservable.subscribe { todo in
+                print(todo)
+            }.disposed(by: self.disposeBag)
             self.present(vc, animated: false, completion: nil)
         }
     }
