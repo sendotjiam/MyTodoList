@@ -40,8 +40,7 @@ class TodoListViewController: UIViewController {
     }()
     
     // MARK: - TableView Data
-    var data = [Todo]()
-    
+    var todoList = [Todo]()
     
     // MARK: - RxSwift
     let disposeBag = DisposeBag()
@@ -106,8 +105,12 @@ extension TodoListViewController {
         DispatchQueue.main.async {
             let vc = AddTodoViewController()
             vc.modalPresentationStyle = .overCurrentContext
-            vc.todoSubjectObservable.subscribe { todo in
-                print(todo)
+            vc.todoSubjectObservable.subscribe { [weak self] todo in
+                let data = todo.element
+                if let title = data?.title, let priority = data?.priority {
+                    self?.todoList.append(Todo(title: title, priority: priority))
+                    self?.tableView.reloadData()
+                }
             }.disposed(by: self.disposeBag)
             self.present(vc, animated: false, completion: nil)
         }
@@ -116,12 +119,12 @@ extension TodoListViewController {
 
 extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        100
+        todoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
-        cell.textLabel?.text = "teststsetset"
+        cell.textLabel?.text = todoList[indexPath.row].title
         return cell
     }
 }
