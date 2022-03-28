@@ -14,11 +14,12 @@ class TodoListViewController: UIViewController {
     private lazy var prioritySegmentedControl : UISegmentedControl = {
         let control = UISegmentedControl(items: ["All", "Low", "Medium", "High"])
         control.selectedSegmentIndex = 0
+//        control.backgroundColor = .system
         return control
     }()
     private lazy var tableView : UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.backgroundColor = .blue
+        tableView.backgroundColor = .systemBackground
         return tableView
     }()
     private var stackView : UIStackView!

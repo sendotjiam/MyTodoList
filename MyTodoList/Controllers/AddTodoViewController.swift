@@ -14,7 +14,7 @@ class AddTodoViewController: UIViewController {
     // MARK: - Container
     private lazy var containerView : UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
