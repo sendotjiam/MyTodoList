@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class TodoListViewController: UIViewController {
     
@@ -14,7 +15,6 @@ class TodoListViewController: UIViewController {
     private lazy var prioritySegmentedControl : UISegmentedControl = {
         let control = UISegmentedControl(items: ["All", "Low", "Medium", "High"])
         control.selectedSegmentIndex = 0
-//        control.backgroundColor = .system
         return control
     }()
     private lazy var tableView : UITableView = {
@@ -41,7 +41,8 @@ class TodoListViewController: UIViewController {
     }()
     
     // MARK: - TableView Data
-    var todoList = [Todo]()
+    var todoList = BehaviorRelay<[Todo]>(value: [])
+    var filteredTodos = [Todo]()
     
     // MARK: - RxSwift
     let disposeBag = DisposeBag()
@@ -102,16 +103,47 @@ extension TodoListViewController {
         view.addSubview(floatingButton)
     }
     
+    func filterTodos(by priority: Priority?) {
+        if priority == nil {
+            self.filteredTodos = self.todoList.value
+        } else {
+            self.todoList.map { todos in
+                return todos.filter { $0.priority == priority }
+            }.subscribe { [weak self] todos in
+                self?.filteredTodos = todos
+            }.disposed(by: disposeBag)
+        }
+        updateTableView()
+    }
+    
+    private func updateTableView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
     @objc func didTapAddBtn() {
         DispatchQueue.main.async {
             let vc = AddTodoViewController()
             vc.modalPresentationStyle = .overCurrentContext
             vc.todoSubjectObservable.subscribe { [weak self] todo in
-                let data = todo.element
-                if let title = data?.title, let priority = data?.priority {
-                    self?.todoList.append(Todo(title: title, priority: priority))
-                    self?.tableView.reloadData()
-                }
+                
+                let priority = Priority(
+                    rawValue: self?.prioritySegmentedControl.selectedSegmentIndex ?? 0 - 1
+                )
+                
+                // Get existing todo and store it to separate variable
+                // then override the todolist
+                let existingTodos = self?.todoList.value
+                guard let todo = todo.element,
+                      var existingTodos = existingTodos
+                else { return }
+                existingTodos.append(todo)
+                self?.todoList.accept(existingTodos)
+                
+                // Filter Todos
+                self?.filterTodos(by: priority)
+                
             }.disposed(by: self.disposeBag)
             self.present(vc, animated: false, completion: nil)
         }
@@ -120,12 +152,12 @@ extension TodoListViewController {
 
 extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        todoList.count
+        filteredTodos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
-        cell.textLabel?.text = todoList[indexPath.row].title
+        cell.textLabel?.text = self.filteredTodos[indexPath.row].title
         return cell
     }
 }

@@ -49,7 +49,24 @@
 			children = (
 				6258055427E874B0000F118D /* Todo.swift */,
 			);
-			path = Models;
+			name = Models;
+			path = ../Models;
+			sourceTree = "<group>";
+		};
+		6275ABDF27F1B65C008A823A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6275ABE027F1B66A008A823A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				62A03D1027E47EF700681421 /* TodoListViewController.swift */,
+				62A03D2027E48C5C00681421 /* AddTodoViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		62A03D0027E47EF700681421 = {
@@ -73,22 +90,22 @@
 		62A03D0B27E47EF700681421 /* MyTodoList */ = {
 			isa = PBXGroup;
 			children = (
-				6258055327E874A3000F118D /* Models */,
 				62A03D1A27E47EFA00681421 /* Info.plist */,
 				62A03D2427E48CF900681421 /* Applications */,
 				62A03D2327E48CF100681421 /* Resources */,
-				62A03D2227E48CE500681421 /* Controllers */,
+				62A03D2227E48CE500681421 /* MVVM */,
 			);
 			path = MyTodoList;
 			sourceTree = "<group>";
 		};
-		62A03D2227E48CE500681421 /* Controllers */ = {
+		62A03D2227E48CE500681421 /* MVVM */ = {
 			isa = PBXGroup;
 			children = (
-				62A03D1027E47EF700681421 /* TodoListViewController.swift */,
-				62A03D2027E48C5C00681421 /* AddTodoViewController.swift */,
+				6258055327E874A3000F118D /* Models */,
+				6275ABE027F1B66A008A823A /* Views */,
+				6275ABDF27F1B65C008A823A /* ViewModels */,
 			);
-			path = Controllers;
+			path = MVVM;
 			sourceTree = "<group>";
 		};
 		62A03D2327E48CF100681421 /* Resources */ = {
@@ -123,7 +140,6 @@
 				B4135BFEE58BD5924F6B6904 /* Pods-MyTodoList.debug.xcconfig */,
 				FE4C0763D26FD3574BBEFFCA /* Pods-MyTodoList.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
