@@ -50,11 +50,17 @@ class TodoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        prioritySegmentedControl.addTarget(self, action: #selector(priorityValueChanged), for: .valueChanged)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         floatingButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 100, width: 50, height: 50)
+    }
+    
+    @IBAction func priorityValueChanged(_ sender: UISegmentedControl) {
+        let priority = Priority(rawValue: prioritySegmentedControl.selectedSegmentIndex - 1)
+        filterTodos(by: priority)
     }
 }
 
@@ -126,23 +132,23 @@ extension TodoListViewController {
         DispatchQueue.main.async {
             let vc = AddTodoViewController()
             vc.modalPresentationStyle = .overCurrentContext
-            vc.todoSubjectObservable.subscribe { [weak self] todo in
+            vc.todoSubjectObservable.subscribe { [unowned self] todo in
                 
                 let priority = Priority(
-                    rawValue: self?.prioritySegmentedControl.selectedSegmentIndex ?? 0 - 1
+                    rawValue: self.prioritySegmentedControl.selectedSegmentIndex - 1
                 )
                 
                 // Get existing todo and store it to separate variable
                 // then override the todolist
-                let existingTodos = self?.todoList.value
-                guard let todo = todo.element,
-                      var existingTodos = existingTodos
+                var existingTodos = self.todoList.value
+                guard let todo = todo.element
                 else { return }
+//                var existingTodos = existingTodos
                 existingTodos.append(todo)
-                self?.todoList.accept(existingTodos)
+                self.todoList.accept(existingTodos)
                 
                 // Filter Todos
-                self?.filterTodos(by: priority)
+                self.filterTodos(by: priority)
                 
             }.disposed(by: self.disposeBag)
             self.present(vc, animated: false, completion: nil)
