@@ -97,7 +97,22 @@ extension AddTodoViewController : UITextFieldDelegate {
     }
 }
 
-// MARK: - Internal function
+// MARK: - Business Logic
+extension AddTodoViewController {
+    @objc private func addNewTodo() {
+        guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex + 1),
+              let title = textField.text else {
+                  return
+              }
+        let todo = Todo(title: title, priority: priority)
+        todoSubject.onNext(todo)
+        DispatchQueue.main.async { [weak self] in
+            self?.animateDismissView()
+        }
+    }
+}
+
+// MARK: - Style UI Extension
 extension AddTodoViewController {
     private func setupComponentHeight() {
         containerDefaultHeight = view.frame.height * 3/4
@@ -144,6 +159,11 @@ extension AddTodoViewController {
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: containerDefaultHeight)
         containerViewBottomConstraint?.isActive = true
     }
+    
+}
+
+// MARK: - Animate
+extension AddTodoViewController {
     private func animatePresentContainer() {
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.containerViewBottomConstraint?.constant = 0
@@ -168,16 +188,6 @@ extension AddTodoViewController {
             self?.dismiss(animated: false)
         }
     }
-    private func setupTapGesture() {
-        let dismissGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleDismissGesture))
-        dimmedView.addGestureRecognizer(dismissGesture)
-    }
-    private func setupPanGesture() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(gesture:)))
-        panGesture.delaysTouchesBegan = false
-        panGesture.delaysTouchesEnded = false
-        view.addGestureRecognizer(panGesture)
-    }
     private func animateContainerHeight(_ height : CGFloat) {
         UIView.animate(withDuration: 0.4) { [weak self] in
             self?.containerViewHeightConstraint?.constant = height
@@ -187,18 +197,17 @@ extension AddTodoViewController {
     }
 }
 
-// MARK: - Objc Function - AddTodo - Gesture Action
+// MARK: - Gesture
 extension AddTodoViewController {
-    @objc private func addNewTodo() {
-        guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex),
-              let title = textField.text else {
-                  return
-              }
-        let todo = Todo(title: title, priority: priority)
-        todoSubject.onNext(todo)
-        DispatchQueue.main.async { [weak self] in
-            self?.animateDismissView()
-        }
+    private func setupTapGesture() {
+        let dismissGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleDismissGesture))
+        dimmedView.addGestureRecognizer(dismissGesture)
+    }
+    private func setupPanGesture() {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(gesture:)))
+        panGesture.delaysTouchesBegan = false
+        panGesture.delaysTouchesEnded = false
+        view.addGestureRecognizer(panGesture)
     }
     @objc private func handleDismissGesture() {
         animateDismissView()

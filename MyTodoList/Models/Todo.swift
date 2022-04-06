@@ -8,6 +8,7 @@
 import Foundation
 
 enum Priority : Int{
+    case all
     case low
     case medium
     case high
