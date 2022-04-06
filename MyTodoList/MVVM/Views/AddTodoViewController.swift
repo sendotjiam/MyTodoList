@@ -190,7 +190,7 @@ extension AddTodoViewController {
 // MARK: - Objc Function - AddTodo - Gesture Action
 extension AddTodoViewController {
     @objc private func addNewTodo() {
-        guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex),
+        guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex + 1),
               let title = textField.text else {
                   return
               }

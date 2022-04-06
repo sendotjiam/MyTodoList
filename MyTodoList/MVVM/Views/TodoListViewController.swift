@@ -47,32 +47,77 @@ class TodoListViewController: UIViewController {
     // MARK: - RxSwift
     let disposeBag = DisposeBag()
     
+    var viewModel : TodoViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        prioritySegmentedControl.addTarget(self, action: #selector(priorityValueChanged), for: .valueChanged)
+        viewModel = TodoViewModel()
+        bindViewModel()
+        
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        floatingButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 100, width: 50, height: 50)
-    }
-    
+
     @IBAction func priorityValueChanged(_ sender: UISegmentedControl) {
-        let priority = Priority(rawValue: prioritySegmentedControl.selectedSegmentIndex - 1)
-        filterTodos(by: priority)
+        let priority = Priority(rawValue: prioritySegmentedControl.selectedSegmentIndex)
+        viewModel.filterTodos(by: priority)
     }
 }
 
+// MARK: - TableView Extension
+extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        filteredTodos.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
+        cell.textLabel?.text = self.filteredTodos[indexPath.row].title
+        return cell
+    }
+}
 
+// MARK: - Business Logic Extension
+extension TodoListViewController {
+    func bindViewModel() {
+        viewModel.didFilteredTodos = { [weak self] in
+            guard let todos = self?.viewModel.filteredTodos else { return }
+            self?.filteredTodos = todos
+            self?.updateTableView()
+        }
+    }
+    
+    private func updateTableView() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    @objc func didTapAddBtn() {
+        let priorityIdx = prioritySegmentedControl.selectedSegmentIndex
+        DispatchQueue.main.async { [weak self] in
+            let vc = AddTodoViewController()
+            vc.modalPresentationStyle = .overCurrentContext
+            self?.viewModel.addNewTodo(
+                with: vc.todoSubjectObservable,
+                priorityIdx: priorityIdx
+            )
+            self?.present(vc, animated: false, completion: nil)
+        }
+    }
+}
+
+// MARK: - Style UI Extension
 extension TodoListViewController {
     func setupUI() {
-        navigationItem.title = "Todo List"
+        navigationItem.title = "Todos"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .systemBackground
+        
         setupStackView()
         setupTableView()
         setupFloatingBtn()
+        
+        prioritySegmentedControl.addTarget(self, action: #selector(priorityValueChanged), for: .valueChanged)
     }
     
     func setupStackView() {
@@ -105,65 +150,8 @@ extension TodoListViewController {
     }
     
     func setupFloatingBtn() {
+        floatingButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 100, width: 50, height: 50)
         floatingButton.addTarget(self, action: #selector(didTapAddBtn), for: .touchUpInside)
         view.addSubview(floatingButton)
-    }
-    
-    func filterTodos(by priority: Priority?) {
-        if priority == nil {
-            self.filteredTodos = self.todoList.value
-        } else {
-            self.todoList.map { todos in
-                return todos.filter { $0.priority == priority }
-            }.subscribe { [weak self] todos in
-                self?.filteredTodos = todos
-            }.disposed(by: disposeBag)
-        }
-        updateTableView()
-    }
-    
-    private func updateTableView() {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
-    }
-    
-    @objc func didTapAddBtn() {
-        DispatchQueue.main.async {
-            let vc = AddTodoViewController()
-            vc.modalPresentationStyle = .overCurrentContext
-            vc.todoSubjectObservable.subscribe { [unowned self] todo in
-                
-                let priority = Priority(
-                    rawValue: self.prioritySegmentedControl.selectedSegmentIndex - 1
-                )
-                
-                // Get existing todo and store it to separate variable
-                // then override the todolist
-                var existingTodos = self.todoList.value
-                guard let todo = todo.element
-                else { return }
-//                var existingTodos = existingTodos
-                existingTodos.append(todo)
-                self.todoList.accept(existingTodos)
-                
-                // Filter Todos
-                self.filterTodos(by: priority)
-                
-            }.disposed(by: self.disposeBag)
-            self.present(vc, animated: false, completion: nil)
-        }
-    }
-}
-
-extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        filteredTodos.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
-        cell.textLabel?.text = self.filteredTodos[indexPath.row].title
-        return cell
     }
 }

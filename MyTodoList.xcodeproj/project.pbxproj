@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3A88362C93B4EDB23E0A2A0B /* Pods_MyTodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F73C1B58F98ECF745AF6DEDB /* Pods_MyTodoList.framework */; };
 		6258055527E874B0000F118D /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6258055427E874B0000F118D /* Todo.swift */; };
+		625D3DC127FD32C6007CCC06 /* TodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D3DC027FD32C6007CCC06 /* TodoViewModel.swift */; };
+		625D3DC727FD3626007CCC06 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D3DC627FD3626007CCC06 /* Constants.swift */; };
 		62A03D0D27E47EF700681421 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D0C27E47EF700681421 /* AppDelegate.swift */; };
 		62A03D0F27E47EF700681421 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D0E27E47EF700681421 /* SceneDelegate.swift */; };
 		62A03D1127E47EF700681421 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A03D1027E47EF700681421 /* TodoListViewController.swift */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		6258055427E874B0000F118D /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		625D3DC027FD32C6007CCC06 /* TodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewModel.swift; sourceTree = "<group>"; };
+		625D3DC627FD3626007CCC06 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		62A03D0927E47EF700681421 /* MyTodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A03D0C27E47EF700681421 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		62A03D0E27E47EF700681421 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,9 +57,18 @@
 			path = ../Models;
 			sourceTree = "<group>";
 		};
+		625D3DC527FD361A007CCC06 /* Contants */ = {
+			isa = PBXGroup;
+			children = (
+				625D3DC627FD3626007CCC06 /* Constants.swift */,
+			);
+			path = Contants;
+			sourceTree = "<group>";
+		};
 		6275ABDF27F1B65C008A823A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				625D3DC027FD32C6007CCC06 /* TodoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -90,6 +103,7 @@
 		62A03D0B27E47EF700681421 /* MyTodoList */ = {
 			isa = PBXGroup;
 			children = (
+				625D3DC527FD361A007CCC06 /* Contants */,
 				62A03D1A27E47EFA00681421 /* Info.plist */,
 				62A03D2427E48CF900681421 /* Applications */,
 				62A03D2327E48CF100681421 /* Resources */,
@@ -261,6 +275,8 @@
 				62A03D2127E48C5D00681421 /* AddTodoViewController.swift in Sources */,
 				62A03D1127E47EF700681421 /* TodoListViewController.swift in Sources */,
 				62A03D0D27E47EF700681421 /* AppDelegate.swift in Sources */,
+				625D3DC727FD3626007CCC06 /* Constants.swift in Sources */,
+				625D3DC127FD32C6007CCC06 /* TodoViewModel.swift in Sources */,
 				62A03D0F27E47EF700681421 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
