@@ -14,7 +14,11 @@ enum Priority : Int{
     case high
 }
 
-struct Todo {
+struct Todo : Codable {
     let title : String
     let priority : Priority
+    
+    enum CodingKeys: String, CodingKey {
+        case title, priority
+    }
 }
