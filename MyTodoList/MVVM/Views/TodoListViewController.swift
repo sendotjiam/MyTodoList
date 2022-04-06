@@ -78,7 +78,7 @@ extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Business Logic Extension
 extension TodoListViewController {
-    func bindViewModel() {
+    private func bindViewModel() {
         viewModel.didFilteredTodos = { [weak self] in
             guard let todos = self?.viewModel.filteredTodos else { return }
             self?.filteredTodos = todos
@@ -92,7 +92,7 @@ extension TodoListViewController {
         }
     }
     
-    @objc func didTapAddBtn() {
+    @objc private func didTapAddBtn() {
         let priorityIdx = prioritySegmentedControl.selectedSegmentIndex
         DispatchQueue.main.async { [weak self] in
             let vc = AddTodoViewController()
@@ -108,7 +108,7 @@ extension TodoListViewController {
 
 // MARK: - Style UI Extension
 extension TodoListViewController {
-    func setupUI() {
+    private func setupUI() {
         navigationItem.title = "Todos"
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .systemBackground
@@ -120,7 +120,7 @@ extension TodoListViewController {
         prioritySegmentedControl.addTarget(self, action: #selector(priorityValueChanged), for: .valueChanged)
     }
     
-    func setupStackView() {
+    private func setupStackView() {
         stackView = UIStackView(arrangedSubviews: [prioritySegmentedControl, tableView])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +133,7 @@ extension TodoListViewController {
         setupStackViewConstraints()
     }
     
-    func setupStackViewConstraints() {
+    private func setupStackViewConstraints() {
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
@@ -143,13 +143,13 @@ extension TodoListViewController {
         ])
     }
     
-    func setupTableView() {
+    private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
-    func setupFloatingBtn() {
+    private func setupFloatingBtn() {
         floatingButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 100, width: 50, height: 50)
         floatingButton.addTarget(self, action: #selector(didTapAddBtn), for: .touchUpInside)
         view.addSubview(floatingButton)
