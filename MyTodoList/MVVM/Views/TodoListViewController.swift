@@ -54,7 +54,7 @@ class TodoListViewController: UIViewController {
         setupUI()
         viewModel = TodoViewModel()
         bindViewModel()
-        
+//        filteredTodos = UserDefaults.standard.array(forKey: "todos") as? [Todo] ?? []
     }
 
     @IBAction func priorityValueChanged(_ sender: UISegmentedControl) {

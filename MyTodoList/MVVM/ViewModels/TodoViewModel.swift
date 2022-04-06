@@ -15,11 +15,12 @@ class TodoViewModel {
     var todosRelay = BehaviorRelay<[Todo]>(value: [])
     var filteredTodos = [Todo]()
     var disposeBag = DisposeBag()
-    
-    init() {
-        guard let allTodos = TodoRepository.shared.getAllTodos() else {return}
-        self.todosRelay.accept(allTodos)
-    }
+
+//    init() {
+//        guard let allTodos = TodoRepository.shared.getAllTodos()
+//        else {return}
+//        self.todosRelay.accept(allTodos)
+//    }
     
     var didFilteredTodos : (() -> Void)?
     
@@ -32,14 +33,12 @@ class TodoViewModel {
             else { return }
             existingTodos.append(todo)
             todosRelay.accept(existingTodos)
-            TodoRepository.shared.setObject(todo, forKey: "todos")
             let priority = Priority(rawValue: priorityIdx)
             filterTodos(by: priority)
         }.disposed(by: disposeBag)
     }
     
     func filterTodos(by priority : Priority?) {
-
         if priority == Priority.all {
             filteredTodos = todosRelay.value
         } else {
