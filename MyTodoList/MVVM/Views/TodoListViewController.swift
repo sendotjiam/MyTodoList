@@ -50,7 +50,6 @@ class TodoListViewController: UIViewController {
         setupUI()
         viewModel = TodoViewModel()
         bindViewModel()
-//        TodoRepository.shared.clearRepository()
         filteredTodos = viewModel.todos
     }
 
@@ -71,6 +70,23 @@ extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = self.filteredTodos[indexPath.row].title
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let alert = createCustomAlert(title: "Remove Todo", message: "Would you like to delete this todo? Once clear you can't see this todo anymore!")
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(
+                UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
+                    self?.viewModel.deleteTodo(with: indexPath.row)
+                }
+            )
+            present(alert, animated: true)
+        }
+    }
 }
 
 // MARK: - Business Logic Extension
@@ -79,17 +95,40 @@ extension TodoListViewController {
         viewModel.didFilteredTodos = { [weak self] in
             guard let todos = self?.viewModel.filteredTodos else { return }
             self?.filteredTodos = todos
-            self?.updateTableView()
+            DispatchQueue.main.async {
+                self?.updateTableView()
+            }
         }
-        viewModel.didSavedTodoToUserDefaults = { [weak self] todo in
-            
+        
+        viewModel.didClearTodos = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alert = self?.createDefaultAlert(
+                    title: "Remove Todo",
+                    message: "You've successfully clear todos"
+                )
+                else { return }
+                self?.present(alert, animated: true)
+                self?.updateTableView()
+            }
+        }
+        
+        viewModel.didRemovedTodo = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alert = self?.createDefaultAlert(
+                    title: "Remove Todo",
+                    message: "You've successfully removed todo"
+                )
+                else { return }
+                self?.present(alert, animated: true)
+                self?.updateTableView()
+            }
         }
     }
     
     private func updateTableView() {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
+        let todos = self.viewModel.todos
+        self.filteredTodos = todos
+        self.tableView.reloadData()
     }
     
     
@@ -105,6 +144,17 @@ extension TodoListViewController {
             self?.present(vc, animated: false, completion: nil)
         }
     }
+    
+    @objc private func didTapClearTodosBtn() {
+        let alert = createCustomAlert(title: "Clear All Todos", message: "Would you like to clear your todos? Once deleted, there's nothing left on your todos!")
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(
+            UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
+                self?.viewModel.clearRepository()
+            }
+        )
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - Style UI Extension
@@ -112,6 +162,13 @@ extension TodoListViewController {
     private func setupUI() {
         navigationItem.title = "Todos"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem
+            .rightBarButtonItem = UIBarButtonItem(
+                title: "Clear",
+                style: .plain,
+                target: self,
+                action: #selector(didTapClearTodosBtn)
+            )
         view.backgroundColor = .systemBackground
         
         setupStackView()
