@@ -20,6 +20,7 @@ class TodoViewModel {
 
     var didFilteredTodos : (() -> Void)?
     var didSavedTodoToUserDefaults : ((Todo) -> Void)?
+    var didRemovedTodo : (() -> Void)?
     
     func addNewTodo(with observable : Observable<Todo>, priorityIdx : Int) {
         observable.subscribe { [unowned self] todo in
@@ -54,5 +55,9 @@ class TodoViewModel {
         TodoRepository.shared.saveTodo(todo: todo)
         didSavedTodoToUserDefaults?(todo)
     }
-    
+ 
+    func deleteTodo(with index : Int) {
+        TodoRepository.shared.deleteTodo(index: index)
+        didRemovedTodo?()
+    }
 }

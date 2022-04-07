@@ -25,6 +25,12 @@ class TodoRepository : BaseRepository {
         setObject(items, forKey: "todos")
     }
     
+    func deleteTodo(index: Int) {
+        var items = self.getAllTodos()
+        items.remove(at: index)
+        setObject(items, forKey: "todos")
+    }
+    
     func clearRepository() {
         setObject([Todo](), forKey: "todos")
     }

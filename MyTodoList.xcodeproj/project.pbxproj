@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A88362C93B4EDB23E0A2A0B /* Pods_MyTodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F73C1B58F98ECF745AF6DEDB /* Pods_MyTodoList.framework */; };
+		621F8E5827FE9A2D001867AD /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621F8E5727FE9A2D001867AD /* UIViewController+Ext.swift */; };
 		6258055527E874B0000F118D /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6258055427E874B0000F118D /* Todo.swift */; };
 		625D3DC127FD32C6007CCC06 /* TodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D3DC027FD32C6007CCC06 /* TodoViewModel.swift */; };
 		625D3DC727FD3626007CCC06 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625D3DC627FD3626007CCC06 /* Constants.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		621F8E5727FE9A2D001867AD /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		6258055427E874B0000F118D /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		625D3DC027FD32C6007CCC06 /* TodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewModel.swift; sourceTree = "<group>"; };
 		625D3DC627FD3626007CCC06 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -52,6 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		621F8E5627FE9A19001867AD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				621F8E5727FE9A2D001867AD /* UIViewController+Ext.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		6258055327E874A3000F118D /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +126,7 @@
 		62A03D0B27E47EF700681421 /* MyTodoList */ = {
 			isa = PBXGroup;
 			children = (
+				621F8E5627FE9A19001867AD /* Helpers */,
 				625D3DC527FD361A007CCC06 /* Contants */,
 				62A03D1A27E47EFA00681421 /* Info.plist */,
 				62A03D2427E48CF900681421 /* Applications */,
@@ -287,6 +298,7 @@
 			files = (
 				6258055527E874B0000F118D /* Todo.swift in Sources */,
 				62A03D2127E48C5D00681421 /* AddTodoViewController.swift in Sources */,
+				621F8E5827FE9A2D001867AD /* UIViewController+Ext.swift in Sources */,
 				62A03D1127E47EF700681421 /* TodoListViewController.swift in Sources */,
 				62A03D0D27E47EF700681421 /* AppDelegate.swift in Sources */,
 				625D3DC727FD3626007CCC06 /* Constants.swift in Sources */,

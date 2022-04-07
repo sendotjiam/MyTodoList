@@ -50,7 +50,6 @@ class TodoListViewController: UIViewController {
         setupUI()
         viewModel = TodoViewModel()
         bindViewModel()
-//        TodoRepository.shared.clearRepository()
         filteredTodos = viewModel.todos
     }
 
@@ -71,6 +70,23 @@ extension TodoListViewController : UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = self.filteredTodos[indexPath.row].title
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let alert = createCustomAlert(title: "Remove Todo", message: "Would you like to delete this todo? Once deleted you can't see this todo anymore!")
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(
+                UIAlertAction(title: "Confirm", style: .default) { [weak self] action in
+                    self?.viewModel.deleteTodo(with: indexPath.row)
+                }
+            )
+            present(alert, animated: true)
+        }
+    }
 }
 
 // MARK: - Business Logic Extension
@@ -81,8 +97,18 @@ extension TodoListViewController {
             self?.filteredTodos = todos
             self?.updateTableView()
         }
-        viewModel.didSavedTodoToUserDefaults = { [weak self] todo in
-            
+        viewModel.didRemovedTodo = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alert = self?.createDefaultAlert(
+                    title: "Remove Todo",
+                    message: "You've successfully removed todo"
+                ),
+                      let todos = self?.viewModel.todos
+                else { return }
+                self?.present(alert, animated: true)
+                self?.filteredTodos = todos
+                self?.tableView.reloadData()
+            }
         }
     }
     
