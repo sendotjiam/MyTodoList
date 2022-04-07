@@ -19,8 +19,8 @@ class TodoViewModel {
     var disposeBag = DisposeBag()
 
     var didFilteredTodos : (() -> Void)?
-    var didSavedTodoToUserDefaults : ((Todo) -> Void)?
     var didRemovedTodo : (() -> Void)?
+    var didClearTodos : (() -> Void)?
     
     func addNewTodo(with observable : Observable<Todo>, priorityIdx : Int) {
         observable.subscribe { [unowned self] todo in
@@ -47,17 +47,20 @@ class TodoViewModel {
                 self?.filteredTodos = todos
             }.disposed(by: disposeBag)
         }
-        
         didFilteredTodos?()
     }
     
     func saveTodoToUserDefaults(with todo : Todo) {
         TodoRepository.shared.saveTodo(todo: todo)
-        didSavedTodoToUserDefaults?(todo)
     }
  
     func deleteTodo(with index : Int) {
         TodoRepository.shared.deleteTodo(index: index)
         didRemovedTodo?()
+    }
+    
+    func clearRepository() {
+        TodoRepository.shared.clearRepository()
+        didClearTodos?()
     }
 }
