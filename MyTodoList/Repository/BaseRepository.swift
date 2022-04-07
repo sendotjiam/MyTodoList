@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class BaseRepository {
-     
+    
     func setObject<Object>(_ object: Object, forKey: String) where Object: Encodable {
         do {
             let data = try JSONEncoder().encode(object)
@@ -21,7 +21,10 @@ class BaseRepository {
     }
         
     func getObject<Object>(forKey: String, castTo type: Object.Type) -> Object? where Object: Decodable {
-        guard let data = UserDefaults.standard.data(forKey: forKey) else { return nil }
+        guard let data = UserDefaults.standard.data(forKey: forKey) else {
+            print("ERROR GET FROM UD")
+            return nil
+        }
         do {
             let object = try JSONDecoder().decode(type, from: data)
             return object

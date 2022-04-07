@@ -11,30 +11,28 @@ import RxCocoa
 
 class TodoViewModel {
     
-    var todos = [Todo]()
+    var todos : [Todo] {
+        get { return TodoRepository.shared.getAllTodos() }
+    }
     var todosRelay = BehaviorRelay<[Todo]>(value: [])
     var filteredTodos = [Todo]()
     var disposeBag = DisposeBag()
 
-//    init() {
-//        guard let allTodos = TodoRepository.shared.getAllTodos()
-//        else {return}
-//        self.todosRelay.accept(allTodos)
-//    }
-    
     var didFilteredTodos : (() -> Void)?
+    var didSavedTodoToUserDefaults : ((Todo) -> Void)?
     
     func addNewTodo(with observable : Observable<Todo>, priorityIdx : Int) {
         observable.subscribe { [unowned self] todo in
-            // Get existing todo and store it to separate variable
-            // then override the todolist
-            var existingTodos = todosRelay.value
-            guard let todo = todo.element
-            else { return }
+            var existingTodos = todos
+            guard let todo = todo.element else { return }
             existingTodos.append(todo)
+            print(existingTodos.count)
             todosRelay.accept(existingTodos)
+            
             let priority = Priority(rawValue: priorityIdx)
             filterTodos(by: priority)
+            
+            saveTodoToUserDefaults(with: todo)
         }.disposed(by: disposeBag)
     }
     
@@ -48,7 +46,13 @@ class TodoViewModel {
                 self?.filteredTodos = todos
             }.disposed(by: disposeBag)
         }
+        
         didFilteredTodos?()
+    }
+    
+    func saveTodoToUserDefaults(with todo : Todo) {
+        TodoRepository.shared.saveTodo(todo: todo)
+        didSavedTodoToUserDefaults?(todo)
     }
     
 }

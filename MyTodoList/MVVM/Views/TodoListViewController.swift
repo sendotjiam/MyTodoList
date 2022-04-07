@@ -41,20 +41,17 @@ class TodoListViewController: UIViewController {
     }()
     
     // MARK: - TableView Data
-    var todoList = BehaviorRelay<[Todo]>(value: [])
     var filteredTodos = [Todo]()
     
-    // MARK: - RxSwift
-    let disposeBag = DisposeBag()
-    
-    var viewModel : TodoViewModel!
+    private var viewModel : TodoViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         viewModel = TodoViewModel()
         bindViewModel()
-//        filteredTodos = UserDefaults.standard.array(forKey: "todos") as? [Todo] ?? []
+//        TodoRepository.shared.clearRepository()
+        filteredTodos = viewModel.todos
     }
 
     @IBAction func priorityValueChanged(_ sender: UISegmentedControl) {
@@ -84,6 +81,9 @@ extension TodoListViewController {
             self?.filteredTodos = todos
             self?.updateTableView()
         }
+        viewModel.didSavedTodoToUserDefaults = { [weak self] todo in
+            
+        }
     }
     
     private func updateTableView() {
@@ -91,6 +91,7 @@ extension TodoListViewController {
             self?.tableView.reloadData()
         }
     }
+    
     
     @objc private func didTapAddBtn() {
         let priorityIdx = prioritySegmentedControl.selectedSegmentIndex

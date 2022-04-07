@@ -10,19 +10,22 @@ import Foundation
 class TodoRepository : BaseRepository {
     
     static let shared = TodoRepository()
+    
+    private override init() {}
 
-    func getAllTodos() -> [Todo]? {
-//        let items = getObject(forKey: "todos", castTo: [Todo].self) ?? nil
-        let items = UserDefaults.standard.array(forKey: "todos") as? [Todo]
-        print(items)
+    func getAllTodos() -> [Todo] {
+        guard let items = getObject(forKey: "todos", castTo: [Todo].self)
+        else { return [] }
         return items
     }
     
-    func addTodo(todo: Todo) {
-        guard var items = self.getAllTodos() else { return }
+    func saveTodo(todo: Todo) {
+        var items = self.getAllTodos()
         items.append(todo)
-        print(items, todo)
-        UserDefaults.standard.set(items, forKey: "todos")
-//        setObject(items, forKey: "todos")
+        setObject(items, forKey: "todos")
+    }
+    
+    func clearRepository() {
+        setObject([Todo](), forKey: "todos")
     }
 }
