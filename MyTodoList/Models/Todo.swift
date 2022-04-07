@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum Priority : Int{
+enum Priority : Int, Codable{
     case all
     case low
     case medium
     case high
 }
 
-struct Todo {
+struct Todo : Codable {
     let title : String
     let priority : Priority
 }

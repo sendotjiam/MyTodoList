@@ -75,12 +75,18 @@ class AddTodoViewController: UIViewController {
     var todoSubjectObservable : Observable<Todo> {
         return todoSubject.asObservable()
     }
+    
+    private var viewModel : TodoViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupComponentHeight()
         setupUI()
         setupTapGesture()
         setupPanGesture()
+        
+        viewModel = TodoViewModel()
+        bindViewModel()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -99,13 +105,13 @@ extension AddTodoViewController : UITextFieldDelegate {
 
 // MARK: - Business Logic
 extension AddTodoViewController {
+    private func bindViewModel() { }
+    
     @objc private func addNewTodo() {
         guard let priority = Priority(rawValue: segmentedControl.selectedSegmentIndex + 1),
-              let title = textField.text else {
-                  return
-              }
-        let todo = Todo(title: title, priority: priority)
-        todoSubject.onNext(todo)
+              let title = textField.text
+        else { return }
+        todoSubject.onNext(Todo(title: title, priority: priority))
         DispatchQueue.main.async { [weak self] in
             self?.animateDismissView()
         }
